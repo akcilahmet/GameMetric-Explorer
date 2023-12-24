@@ -1,1 +1,1 @@
-# SellRadar-Amazon-Bestsellers-Explorer
+GameMetric Explorer
