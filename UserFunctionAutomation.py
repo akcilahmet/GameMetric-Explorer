@@ -1,5 +1,6 @@
 SIGN_IN_BUTTON_PATH = '//*[@id=":rb:"]/span'
 EMAIL_XPATH = '//*[@id="email"]'
+LOGIN_NEXT_STEP_BTN_XPATH='//*[@id="new_user"]/font/font/input'
 PASSWORD_XPATH = '//*[@id="password"]'
 NEXT_STEP_XPATH = '//*[@id="new_user"]/input[2]'
 USER_FUNC_MODEL_PANEL_XPATH = '/html/body/div[6]/div[2]'

@@ -16,9 +16,16 @@ class SensorTowerScraper:
         email_input = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.EMAIL_XPATH)
         email_input.send_keys(email)
 
+        Wait_Helper.random_sleep(.3,1)
+        # 'Next-Step'
+        next_step = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.NEXT_STEP_XPATH)
+        next_step.click()
+
         # 'Password'
         password_input = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.PASSWORD_XPATH)
         password_input.send_keys(password)
+
+        Wait_Helper.random_sleep(.3,1)
 
         # 'Next-Step'
         next_step = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.NEXT_STEP_XPATH)
@@ -84,14 +91,53 @@ class SensorTowerScraper:
                                                    class_='MuiTypography-root MuiTypography-body1 MuiTypography-noWrap css-1wq0212')
 
                 if game_name_element:
-                    # Oyun adını al
+                    # TODO oyun adı kayıt edilmeli veri tabanına
                     game_name = game_name_element.text.strip()
                     print(f'{idx}.{game_name}')
                     Wait_Helper.random_sleep(.1, .5)
+
 
                     game_href = game_link.get("href")
                     if game_href:
                         driver.execute_script("window.open('" + game_href + "', '_blank');")
                         Wait_Helper.random_sleep(1, 2)
+
+                        # Yeni pencereye geçiş
+                        new_window_handle = driver.window_handles[-1]  # Son eklenen pencerenin tanımlayıcısını al
+                        driver.switch_to.window(new_window_handle)
+                        #yeni pencere parse edilir
+                        Wait_Helper.random_sleep(1,2)
+                        new_window_html_content = driver.page_source
+                        new_soup = BeautifulSoup(new_window_html_content, 'html.parser')
+
+                        #base_staticstic bilgilerine ulaşılır
+                        base_statistic = new_soup.findAll('div',
+                                                             class_='MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true css-e0hrjf')
+                        print("***Base Statistic Information***")
+                        #Base_statistic bilgileri ekrana yazdirilir
+                        for statistic in base_statistic:
+                            statistic_name =statistic.text.strip()
+                            print(f'{statistic_name}' if statistic_name else 'Null')
+
+                        Wait_Helper.random_sleep(.1,.3)
+
+                        #game_statistic bilgilerine ulasilir
+                        game_statistic = new_soup.findAll('div',
+                                                          class_='MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-md-4 css-uvp9to')
+                        print("***Game Statistic Information***")
+                        # game_statistic bilgileri ekrana yazdirilir
+                        for statistic in game_statistic:
+                            statistic_name = statistic.text.strip()
+                            print(f'{statistic_name}' if statistic_name else 'Null')
+
+                        #TODO sımdı butun gerekli verilere ulasim saglandi. Bu verileri sql veri tabanına düzgünce yazılacak sekılde ayarlamak gerekli
+                        Wait_Helper.random_sleep(1,.3)
+
+                        # Yeni pencereden çıkış yapılır
+                        driver.close()
+
+                        # Eğer gerekiyorsa, önceki pencereye geri dönüş yapılır
+                        driver.switch_to.window(driver.window_handles[0])
+                        Wait_Helper.random_sleep(1,3)
 
                 Wait_Helper.random_sleep(.1, 1)
