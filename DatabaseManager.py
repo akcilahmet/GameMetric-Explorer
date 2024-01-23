@@ -1,6 +1,5 @@
 import mysql.connector
 
-
 class DatabaseManager:
     def __init__(self, host, user, password, database):
         try:
@@ -19,7 +18,6 @@ class DatabaseManager:
         if self.connection.is_connected():
             self.cursor.close()
             self.connection.close()
-
 
     def insert_category(self, category_name):
         try:
@@ -67,24 +65,4 @@ class DatabaseManager:
 
     def check_connection(self):
         return self.connection.is_connected()
-
-db_manager = DatabaseManager(
-    host="localhost",
-    user="root",
-    password="171017Aa",
-    database="gameanalyticschema"
-)
-
-print(db_manager.check_connection())
-
-if(db_manager.check_connection()):
-    try:
-        # db_manager.insert_category("action",)
-        db_manager.insert_game_metric("game1", "action", "2023.12.27", 10, 1.30, 100)
-        # db_manager.update_game_metric("testGame","2023.12.26",1500,50,1000)
-        #db_manager.delete_game_metric("game1","2023.12.27")
-    except Exception as e:
-        print("Error:", str(e))
-    finally:
-        db_manager.close_connection()
 
