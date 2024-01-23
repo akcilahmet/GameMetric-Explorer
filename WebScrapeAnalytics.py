@@ -15,7 +15,7 @@ if __name__ == "__main__":
     url = 'https://app.sensortower.com/'
     driver.get(url)
 
-    STScraper.login(driver, 'xxxxxxx@gmail.com', 'xxxxxxx')
+    STScraper.login(driver, 'xxxxxxx@gmail.com', 'xxxxx')
     STScraper.user_model_panel(driver)
     STScraper.top_charts_games_selected(driver)
 

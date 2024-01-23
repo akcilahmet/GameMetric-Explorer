@@ -68,6 +68,7 @@ class SensorTowerScraper:
         allgames.click()
 
     def games_scraping(driver):
+        global category_first_name
         html_content = driver.page_source
 
         soup = BeautifulSoup(html_content, 'html.parser')
@@ -146,12 +147,14 @@ class SensorTowerScraper:
                         print(f'{revenue_text}')
                         print(f'{category_ranking_text}')
 
+                        category_first_name=""
                         for i in categories_info:
                             my_db_manager.insert_category(i.text)
+                            category_first_name = i.text
                             break
                         my_db_manager.insert_game_metric(
                             game_name,
-                            "test",
+                            category_first_name,
                             date_info_text,
                             download_text,
                             revenue_text,
