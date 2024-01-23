@@ -40,7 +40,7 @@ class DatabaseManager:
                     (game_name, category_name, update_date, downloads, revenue, ratings))
                 self.connection.commit()
             else:
-                print("Bu veri zaten mevcut")
+                print("This data already exists")
         except mysql.connector.Error as er:
             print(f"Database inster_gamemetric: {er}")
 

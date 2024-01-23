@@ -33,10 +33,9 @@ class SensorTowerScraper:
         next_step = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.NEXT_STEP_XPATH)
         next_step.click()
 
-    # user_func model panel olma durumuna göre islem secimi
+    # user_func model panel
     def user_model_panel(driver):
         try:
-            ## eger panel yok ise except bloguna gecis yapar
             user_func_panel = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.USER_FUNC_MODEL_PANEL_XPATH,
                                                            3)
             other = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.USER_FUNC_MODEL_OTHER_BTN_XPATH)
@@ -47,18 +46,16 @@ class SensorTowerScraper:
             print('Panel not found ')
 
     def top_charts_games_selected(driver):
-        # topcharts_new buton icerisinde topcharts kismina giris yapildi
-
+        # topcharts login
         topcharts_new = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.TOP_CHARTS_XPATH)
         topcharts_new.click()
 
         topcharts = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.TOP_CHARTS_SELECTER_XPATH)
         topcharts.click()
 
-        # kategorileri games icerisindeki kategorileri bulma islemi
         Wait_Helper.random_sleep(5, 7)
 
-        # Category dropdown'ını bulana kadar bekle
+        # Category
         category_dropdown = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.GAMES_CATEGORY_XPATH)
         category_dropdown.click()
 
@@ -70,7 +67,6 @@ class SensorTowerScraper:
         allgames = Wait_Helper.wait_for_element(driver, By.XPATH, User_Function.ALLGAMES_CATEGORY_SELECTED_XPATH)
         allgames.click()
 
-    # todo Objenin kendısını al sonra butona iniş yap. ID wlerine göre de alınabilir . Açılan yeni sayfadaki html veriyi al geç
     def games_scraping(driver):
         html_content = driver.page_source
 
@@ -100,17 +96,17 @@ class SensorTowerScraper:
                         driver.execute_script("window.open('" + game_href + "', '_blank');")
                         Wait_Helper.random_sleep(1, 2)
 
-                        # Yeni pencereye geçiş
+                        # new tab
                         new_window_handle = driver.window_handles[-1]  # Son eklenen pencerenin tanımlayıcısını al
                         driver.switch_to.window(new_window_handle)
-                        # yeni pencere parse edilir
+                        # new tab parse
                         Wait_Helper.random_sleep(1, 2)
                         new_window_html_content = driver.page_source
                         games_window = BeautifulSoup(new_window_html_content, 'html.parser')
 
                         Wait_Helper.random_sleep(1, 2)
 
-                        # base_staticstic bilgilerine ulaşılır
+                        # base_staticstic information
                         base_statistic = games_window.findAll('div',
                                                               class_='BaseStatistic-module__statistic--swhHO')
                         game_statistic = games_window.findAll('div',
@@ -150,7 +146,6 @@ class SensorTowerScraper:
                         print(f'{revenue_text}')
                         print(f'{category_ranking_text}')
 
-                        # Database kayit islemi yapilir.
                         for i in categories_info:
                             my_db_manager.insert_category(i.text)
                             break
@@ -165,10 +160,8 @@ class SensorTowerScraper:
 
                         Wait_Helper.random_sleep(1, .3)
 
-                        # Yeni pencereden çıkış yapılır
                         driver.close()
                         Wait_Helper.random_sleep(1, 3)
-                        # Eğer gerekiyorsa, önceki pencereye geri dönüş yapılır
                         driver.switch_to.window(driver.window_handles[0])
                         Wait_Helper.random_sleep(1, 3)
 

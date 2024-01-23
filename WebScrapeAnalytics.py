@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     STScraper.games_scraping(driver)
 
-input("Tarayıcıyı kapatmak için bir tuşa basın.")
+input("Press a key to close the browser")
 
 # Tarayıcıyı kapat
 driver.quit()
